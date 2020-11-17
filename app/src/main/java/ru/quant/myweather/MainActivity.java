@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     Location location;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         api = WeatherAPI.getClient().create(WeatherAPI.ApiInterface.class);
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -45,14 +46,15 @@ public class MainActivity extends AppCompatActivity {
                     100);
         }
         location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         Button btnStart = (Button) findViewById(R.id.btnStart);
+        btnStart.setOnClickListener(onClickStart);
         tvTemp = (TextView) findViewById(R.id.tvTemp);
         tvImage = (ImageView) findViewById(R.id.ivImage);
 
-        btnStart.setOnClickListener(onClickStart);
+
 
     }
 
