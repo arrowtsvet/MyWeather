@@ -52,46 +52,43 @@ public class MainActivity extends AppCompatActivity {
         tvTemp = (TextView) findViewById(R.id.tvTemp);
         tvImage = (ImageView) findViewById(R.id.ivImage);
 
-        btnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Double lat = location.getLatitude();
-                Double lng = location.getLongitude();
-                String units = "metric";
-                String key = WeatherAPI.KEY;
-
-                Log.d(TAG, "OK");
-
-                // get weather for today
-                Call<WeatherDay> callToday = api.getToday(lat, lng, units, key);
-                callToday.enqueue(new Callback<WeatherDay>() {
-                    @Override
-                    public void onResponse(Call<WeatherDay> call, Response<WeatherDay> response) {
-                        Log.e(TAG, "onResponse");
-                        WeatherDay data = response.body();
-                        //Log.d(TAG,response.toString());
-
-                        if (response.isSuccessful()) {
-                            tvTemp.setText(data.getCity() + " " + data.getTempWithDegree());
-                            Glide.with(MainActivity.this).load(data.getIconUrl()).into(tvImage);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<WeatherDay> call, Throwable t) {
-                        Log.e(TAG, "onFailure");
-                        Log.e(TAG, t.toString());
-                    }
-                });
-
-            }
-        });
-
+        btnStart.setOnClickListener(onClickStart);
 
     }
 
+public View.OnClickListener onClickStart = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Double lat = location.getLatitude();
+        Double lng = location.getLongitude();
+        String units = "metric";
+        String key = WeatherAPI.KEY;
 
+        Log.d(TAG, "OK");
+
+        // get weather for today
+        Call<WeatherDay> callToday = api.getToday(lat, lng, units, key);
+        callToday.enqueue(new Callback<WeatherDay>() {
+            @Override
+            public void onResponse(Call<WeatherDay> call, Response<WeatherDay> response) {
+                Log.e(TAG, "onResponse");
+                WeatherDay data = response.body();
+                //Log.d(TAG,response.toString());
+
+                if (response.isSuccessful()) {
+                    tvTemp.setText(data.getCity() + " " + data.getTempWithDegree());
+                    Glide.with(MainActivity.this).load(data.getIconUrl()).into(tvImage);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WeatherDay> call, Throwable t) {
+                Log.e(TAG, "onFailure");
+                Log.e(TAG, t.toString());
+            }
+        });
+    }
+};
 
     public int convertDPtoPX(int dp, Context ctx) {
         float density = ctx.getResources().getDisplayMetrics().density;
