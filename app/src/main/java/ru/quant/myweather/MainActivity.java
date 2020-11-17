@@ -14,6 +14,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,49 +42,60 @@ public class MainActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    1);
+                    100);
         }
         location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Button btnStart = (Button) findViewById(R.id.btnStart);
         tvTemp = (TextView) findViewById(R.id.tvTemp);
         tvImage = (ImageView) findViewById(R.id.ivImage);
         llForecast = (LinearLayout) findViewById(R.id.llForecast);
 
 
-    }
-
-    public void getWeather(View v) {
-
-        Double lat = location.getLatitude();
-        Double lng = location.getLongitude();
-        String units = "metric";
-        String key = WeatherAPI.KEY;
-
-        Log.d(TAG, "OK");
-
-        // get weather for today
-        Call<WeatherDay> callToday = api.getToday(lat, lng, units, key);
-        callToday.enqueue(new Callback<WeatherDay>() {
+        btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<WeatherDay> call, Response<WeatherDay> response) {
-                Log.e(TAG, "onResponse");
-                WeatherDay data = response.body();
-                //Log.d(TAG,response.toString());
+            public void onClick(View v) {
 
-                if (response.isSuccessful()) {
-                    tvTemp.setText(data.getCity() + " " + data.getTempWithDegree());
-                    Glide.with(MainActivity.this).load(data.getIconUrl()).into(tvImage);
-                }
-            }
+                Double lat = location.getLatitude();
+                Double lng = location.getLongitude();
+                String units = "metric";
+                String key = WeatherAPI.KEY;
 
-            @Override
-            public void onFailure(Call<WeatherDay> call, Throwable t) {
-                Log.e(TAG, "onFailure");
-                Log.e(TAG, t.toString());
+                Log.d(TAG, "OK");
+
+                // get weather for today
+                Call<WeatherDay> callToday = api.getToday(lat, lng, units, key);
+                callToday.enqueue(new Callback<WeatherDay>() {
+                    @Override
+                    public void onResponse(Call<WeatherDay> call, Response<WeatherDay> response) {
+                        Log.e(TAG, "onResponse");
+                        WeatherDay data = response.body();
+                        //Log.d(TAG,response.toString());
+
+                        if (response.isSuccessful()) {
+                            tvTemp.setText(data.getCity() + " " + data.getTempWithDegree());
+                            Glide.with(MainActivity.this).load(data.getIconUrl()).into(tvImage);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<WeatherDay> call, Throwable t) {
+                        Log.e(TAG, "onFailure");
+                        Log.e(TAG, t.toString());
+                    }
+                });
+
             }
         });
+
+
+    }
+
+
+
+
 
         /* get weather forecast
         Call<WeatherForecast> callForecast = api.getForecast(lat, lng, units, key);
@@ -158,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-    }
+
 
     public int convertDPtoPX(int dp, Context ctx) {
         float density = ctx.getResources().getDisplayMetrics().density;
