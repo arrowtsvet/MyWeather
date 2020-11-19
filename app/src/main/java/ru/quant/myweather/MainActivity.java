@@ -63,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
 public View.OnClickListener onClickStart = new View.OnClickListener() {
     @Override
     public void onClick(View v) {
+
+      RequestLoc();
+
+    }
+
+    public void RequestLoc (){
         Double lat = location.getLatitude();
         Double lng = location.getLongitude();
         String units = "metric";
