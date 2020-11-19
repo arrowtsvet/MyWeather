@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
     Location location;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
-        api = WeatherAPI.getClient().create(WeatherAPI.ApiInterface.class);
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
                     100);
         }
         location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        api = WeatherAPI.getClient().create(WeatherAPI.ApiInterface.class);
 
         setContentView(R.layout.activity_main);
 
