@@ -64,6 +64,12 @@ public View.OnClickListener onClickStart = new View.OnClickListener() {
     @Override
     public void onClick(View v) {
 
+        RequestGeo();
+
+    }
+
+};
+    public void RequestGeo(){
         Double lat = location.getLatitude();
         Double lng = location.getLongitude();
         String units = "metric";
@@ -93,8 +99,6 @@ public View.OnClickListener onClickStart = new View.OnClickListener() {
             }
         });
     }
-
-};
 
     public int convertDPtoPX(int dp, Context ctx) {
         float density = ctx.getResources().getDisplayMetrics().density;
