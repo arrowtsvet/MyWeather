@@ -38,12 +38,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    100);
+                    1);
         }
         location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -52,23 +54,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button btnStart = (Button) findViewById(R.id.btnStart);
-        btnStart.setOnClickListener(onClickStart);
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                RequestGeo();
+
+            }
+        });
+        //btnStart.setOnClickListener(onClickStart);
         tvTemp = (TextView) findViewById(R.id.tvTemp);
         tvImage = (ImageView) findViewById(R.id.ivImage);
 
 
 
-    }
 
-public View.OnClickListener onClickStart = new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-
-        RequestGeo();
 
     }
 
-};
+
     public void RequestGeo(){
         Double lat = location.getLatitude();
         Double lng = location.getLongitude();
