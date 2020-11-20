@@ -57,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                RequestGeo();
+                requestGeo();
 
             }
         });
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void RequestGeo(){
+    public void requestGeo(){
         Double lat = location.getLatitude();
         Double lng = location.getLongitude();
         String units = "metric";
