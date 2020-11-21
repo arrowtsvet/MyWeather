@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    1);
+                    100);
         }
         location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
