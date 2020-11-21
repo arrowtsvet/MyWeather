@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Context;
@@ -26,32 +27,31 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+
     String TAG = "WEATHER";
     TextView tvTemp;
     ImageView tvImage;
     LinearLayout llForecast;
     WeatherAPI.ApiInterface api;
     Location location;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
+        setContentView(R.layout.activity_main);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    1);
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
         }
-        location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         api = WeatherAPI.getClient().create(WeatherAPI.ApiInterface.class);
 
-        setContentView(R.layout.activity_main);
 
         Button btnStart = (Button) findViewById(R.id.btnStart);
         btnStart.setOnClickListener(new View.OnClickListener() {
@@ -61,15 +61,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        //btnStart.setOnClickListener(onClickStart);
+
         tvTemp = (TextView) findViewById(R.id.tvTemp);
         tvImage = (ImageView) findViewById(R.id.ivImage);
 
 
-
-
-
     }
+
+
 
 
     public void requestGeo(){
